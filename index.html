@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deepak | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.cdnfonts.com/css/aquire" rel="stylesheet" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+          Menu
+        </button>
+        <div class="nav-menu" id="nav-menu">
+          <a class="nav-link" href="#home">Home</a>
+          <a class="nav-link" href="#about">About Me</a>
+          <a class="nav-link" href="resume.html">Resume</a>
+          <a class="nav-link" href="#projects">Projects</a>
+          <a class="nav-cta" href="#contact">
+            <span class="nav-cta-icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.4 6.9C2.4 5.57452 3.47452 4.5 4.8 4.5H19.2C20.5255 4.5 21.6 5.57452 21.6 6.9V17.1C21.6 18.4255 20.5255 19.5 19.2 19.5H4.8C3.47452 19.5 2.4 18.4255 2.4 17.1V6.9ZM5.22188 7.32344C4.865 7.05429 4.35764 7.1244 4.08849 7.48128C3.81935 7.83816 3.88946 8.34552 4.24634 8.61466L11.5063 14.0813C11.791 14.2957 12.184 14.2957 12.4688 14.0813L19.7288 8.61466C20.0856 8.34552 20.1557 7.83816 19.8866 7.48128C19.6175 7.1244 19.1101 7.05429 18.7532 7.32344L11.9875 12.4219L5.22188 7.32344Z"/>
+              </svg>
+            </span>
+            <span class="nav-cta-text">Contact Me</span>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="section hero" aria-label="Hero">
+        <div class="container">
+          <h1 class="hero-title">Deepak Deodhar</h1>
+          <p class="hero-subtitle"><span id="typed-role" aria-label="Role"></span><span class="typed-cursor" aria-hidden="true"></span></p>
+          <div class="hero-actions">
+            <a class="button" href="#projects">View Projects</a>
+            <a class="button" href="resume.html">Download Resume</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section" aria-label="About">
+        <div class="container">
+          <h2 class="section-title">About Me</h2>
+          <div class="about-grid">
+            <div class="about-left">
+              <p class="about-paragraph">
+                Developer with hands-on Android app development experience using Java, XML, and Android Studio. Seeking opportunities to build reliable apps while continuously improving technical skills.
+              </p>
+              <div class="education" aria-label="Education">
+                <h3 class="education-title">Education</h3>
+                <div class="education-list">
+                  <article class="education-item">
+                    <p class="education-heading">
+                      <span class="education-period">Sep 2023 - Jun 2026:</span>
+                      <span class="education-school">G. H. Raisoni College of Engineering and Management, Nagpur</span>
+                    </p>
+                    <p class="education-detail">B.Tech – Computer Science and Engineering</p>
+                    <p class="education-score">8.05 CGPA</p>
+                  </article>
+                  <article class="education-item">
+                    <p class="education-heading">
+                      <span class="education-period">Dec 2020 - Jul 2023:</span>
+                      <span class="education-school">Government Polytechnic, Murtijapur</span>
+                    </p>
+                    <p class="education-detail">Polytechnique – Computer Science</p>
+                    <p class="education-score">80.97%</p>
+                  </article>
+                </div>
+              </div>
+            </div>
+            <div class="about-right">
+              <h3 class="about-subtitle">Skills</h3>
+              <div class="skill-icons" aria-label="Skills">
+                <div class="skill-icon skill-icon--stacked" aria-label="Android Studio">
+                  <img src="logos/Android Studio.png" alt="Android Studio" loading="lazy" />
+                  <span>Android Studio</span>
+                </div>
+                <div class="skill-icon skill-icon--stacked" aria-label="Firebase">
+                  <img src="logos/firebase.svg" alt="Firebase" loading="lazy" />
+                  <span>Firebase</span>
+                </div>
+                <div class="skill-icon skill-icon--stacked" aria-label="Figma">
+                  <img src="logos/Figma.png" alt="Figma" loading="lazy" />
+                  <span>Figma</span>
+                </div>
+                <div class="skill-icon skill-icon--stacked" aria-label="Flutterflow">
+                  <img src="logos/Flutterflow.png" alt="Flutterflow" loading="lazy" />
+                  <span>Flutterflow</span>
+                </div>
+                <div class="skill-icon skill-icon--stacked" aria-label="Python">
+                  <img src="logos/Python.png" alt="Python" loading="lazy" />
+                  <span>Python</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section" aria-label="Projects">
+        <div class="container">
+          <h2 class="section-title">Projects</h2>
+          <div id="projects-grid" class="projects-grid" aria-live="polite"></div>
+          <div class="projects-cta">
+            <a class="button" href="https://deepak-774.github.io/Projects-Website/" target="_blank" rel="noopener noreferrer">
+              View All Projects
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section" aria-label="Contact">
+        <div class="container">
+          <h2 class="section-title">Contact Me</h2>
+          <div class="contact-grid">
+            <div class="contact-left">
+              <h3 class="contact-title">Send a Message</h3>
+              <form class="contact-form" id="contact-form">
+                <div class="contact-row">
+                  <div class="contact-field">
+                    <label class="contact-label" for="contact-name">Name</label>
+                    <input class="contact-input" id="contact-name" name="name" type="text" autocomplete="name" />
+                  </div>
+                  <div class="contact-field">
+                    <label class="contact-label" for="contact-email">Email</label>
+                    <input class="contact-input" id="contact-email" name="email" type="email" autocomplete="email" />
+                  </div>
+                </div>
+
+                <div class="contact-field">
+                  <label class="contact-label" for="contact-subject">Subject</label>
+                  <input class="contact-input" id="contact-subject" name="subject" type="text" />
+                </div>
+
+                <div class="contact-field">
+                  <label class="contact-label" for="contact-message">Message</label>
+                  <textarea class="contact-textarea" id="contact-message" name="message" rows="6"></textarea>
+                </div>
+
+                <button class="contact-submit" type="submit">
+                  <span class="contact-submit-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <span class="contact-submit-text">Send Message</span>
+                </button>
+              </form>
+            </div>
+
+            <div class="contact-right">
+              <h3 class="about-subtitle">Get in touch</h3>
+              <div class="contact-methods" aria-label="Contact details">
+                <a class="contact-method" href="mailto:deepakdeodhar01@gmail.com">
+                  <span class="contact-method-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                      <path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 4.2V18h16V8.2l-8 5.3-8-5.3zm8 3.1L20 6H4l8 5.3z" />
+                    </svg>
+                  </span>
+                  <span class="contact-method-text">
+                    <span class="contact-method-title">Email</span>
+                    <span class="contact-method-value">deepakdeodhar01@gmail.com</span>
+                  </span>
+                </a>
+
+                <div class="contact-method" role="group" aria-label="Location">
+                  <span class="contact-method-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                      <path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7zm0 9.5A2.5 2.5 0 1 0 12 6a2.5 2.5 0 0 0 0 5.5z" />
+                    </svg>
+                  </span>
+                  <span class="contact-method-text">
+                    <span class="contact-method-title">Location</span>
+                    <span class="contact-method-value">Nagpur, India</span>
+                  </span>
+                </div>
+
+                <a class="contact-method" href="tel:+910000000000">
+                  <span class="contact-method-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                      <path fill="currentColor" d="M6.6 10.8a15.4 15.4 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1.03-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.03L6.6 10.8z" />
+                    </svg>
+                  </span>
+                  <span class="contact-method-text">
+                    <span class="contact-method-title">Phone</span>
+                    <span class="contact-method-value">+91 88XXX XXXXX</span>
+                  </span>
+                </a>
+
+                <div class="contact-social" aria-label="Social links">
+                  <div class="contact-social-title">Connect with Me</div>
+                  <div class="contact-social-row">
+                    <a class="contact-social-link" href="https://www.linkedin.com/in/deepak-deodhar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                      <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                        <path fill="currentColor" d="M19 3A2 2 0 0 1 21 5v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.34 18.34v-7.63H5.82v7.63h2.52zM7.08 9.66c.8 0 1.3-.53 1.3-1.2-.02-.68-.5-1.2-1.28-1.2S5.8 7.78 5.8 8.46c0 .67.5 1.2 1.27 1.2h.01zM18.18 18.34v-4.25c0-2.27-1.21-3.33-2.83-3.33-1.3 0-1.88.72-2.2 1.22v-1.05h-2.52c.03.7 0 7.63 0 7.63h2.52v-4.26c0-.23.02-.46.08-.62.18-.46.6-.93 1.3-.93.92 0 1.28.7 1.28 1.72v4.09h2.39z" />
+                      </svg>
+                    </a>
+                    <a class="contact-social-link" href="https://github.com/Deepak-774" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                      <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                        <path fill="currentColor" d="M12 .5C5.73.5.75 5.77.75 12.29c0 5.2 3.44 9.62 8.21 11.18.6.11.82-.27.82-.6 0-.3-.01-1.08-.02-2.12-3.34.75-4.04-1.67-4.04-1.67-.55-1.42-1.34-1.8-1.34-1.8-1.09-.77.08-.76.08-.76 1.2.09 1.84 1.28 1.84 1.28 1.08 1.9 2.83 1.35 3.52 1.03.11-.8.42-1.35.76-1.66-2.67-.32-5.48-1.38-5.48-6.14 0-1.36.46-2.47 1.22-3.34-.12-.31-.53-1.57.12-3.27 0 0 1.01-.33 3.3 1.28.96-.27 1.98-.4 3-.4 1.02 0 2.05.14 3.01.4 2.28-1.61 3.29-1.28 3.29-1.28.65 1.7.24 2.96.12 3.27.76.87 1.22 1.98 1.22 3.34 0 4.78-2.81 5.82-5.5 6.13.43.38.81 1.13.81 2.28 0 1.65-.02 2.97-.02 3.37 0 .33.22.72.83.6 4.77-1.57 8.2-5.98 8.2-11.18C23.25 5.77 18.27.5 12 .5z" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="availability" aria-label="Availability">
+                  <div class="availability-title">
+                    <span class="availability-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                        <path fill="currentColor" d="M12 22a10 10 0 1 1 10-10 10.01 10.01 0 0 1-10 10zm0-18a8 8 0 1 0 8 8 8.01 8.01 0 0 0-8-8zm.75 4.5v3.8l2.7 1.62a.75.75 0 0 1-.76 1.29l-3.06-1.84A.75.75 0 0 1 11.25 13V8.5a.75.75 0 0 1 1.5 0z" />
+                      </svg>
+                    </span>
+                    Availability
+                  </div>
+                  <p class="availability-text">
+                    I respond to messages within 24 hours. Open to freelance opportunities and collaborations.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="section-nav" aria-label="Section navigation">
+      <button class="section-nav-btn" type="button" data-section-nav="prev" aria-label="Previous section">
+        ↑
+      </button>
+      <button class="section-nav-btn" type="button" data-section-nav="next" aria-label="Next section">
+        ↓
+      </button>
+    </div>
+
+    <footer class="site-footer" aria-label="Footer">
+      <div class="container">
+        <p class="footer-copy">© 2026 Deepak Deodhar All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>

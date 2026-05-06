@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Anjila Subedi</title>
+    <meta name="description" content="Anjila Subedi - AI Developer and Creative Artist Portfolio">
+    <meta name="keywords" content="AI, Machine Learning, Developer, Artist, Portfolio, Nepal">
+    <meta property="og:title" content="Anjila Subedi">
+    <meta property="og:description" content="AI Developer and Creative Artist Portfolio">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="fonts/Yaparivariable-ultra.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="image/image1.png" as="image">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'yapari': ['Yapari', 'sans-serif'],
+                        'poppins': ['poppins', 'sans-serif'],
+                        'researcher': ['Researcher', 'sans-serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        'mid-wide': '0.1em',
+                        'wide': '0.15em',
+                        'extra-wide': '0.25em',
+                    },
+                }
+            }
+        }
+    </script>
+    <script>
+        // Lazy loading for images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            if ('loading' in HTMLImageElement.prototype) {
+                images.forEach(img => {
+                    img.loading = 'lazy';
+                });
+            } else {
+                // Fallback for browsers that don't support lazy loading
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+                document.body.appendChild(script);
+            }
+        });
+    </script>
+</head>
+<body>
+    <!-- Return Back Button -->
+    <div class="fixed top-6 left-6 z-50">
+        <a href="index.html" class="group relative overflow-hidden border-[1px] border-[#E06031] text-[#E06031] hover:bg-[#E06031] transition-all duration-300 font-researcher tracking-wide whitespace-nowrap inline-flex items-center justify-center w-[180px] h-[40px]">
+            <span class="transform transition-all duration-300 group-hover:opacity-0">Return Back</span>
+            <i class="fas fa-arrow-left text-xl absolute transform translate-y-[-20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-hover:text-white transition-all duration-300"></i>
+        </a>
+    </div>
+
+    <!-- CV Section -->
+    <section id="cv" class="py-20 bg-[#111111] min-h-screen flex items-center justify-center">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-3xl text-white font-researcher mb-12 text-center">CV</h2>
+            <div class="bg-[#1A1A1A] p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
+                <div class="aspect-w-8 aspect-h-11 w-full">
+                    <iframe 
+                        src="Anjila-Subedi-cv.pdf" 
+                        class="w-full h-[800px]" 
+                        frameborder="0">
+                    </iframe>
+                </div>
+                <div class="mt-6 text-center">
+                    <a 
+                        href="Anjila-Subedi-cv.pdf" 
+                        download 
+                        class="group relative overflow-hidden border-[1px] border-[#E06031] text-[#E06031] hover:bg-[#E06031] transition-all duration-300 font-researcher tracking-wide whitespace-nowrap inline-flex items-center justify-center w-[200px] h-[40px]">
+                        <span class="transform transition-all duration-300 group-hover:opacity-0">Download CV</span>
+                        <i class="fas fa-download text-xl absolute transform translate-y-[-20px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-hover:text-white transition-all duration-300"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#111111] py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-gray-400 text-sm">&copy; 2023 Anjila Subedi. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="project.js"></script>
+    <script src="awards.js"></script>
+    <script src="arts.js"></script>
+    <script src="aboutme.js"></script>
+    <script src="contact.js"></script>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full');
+                menu.classList.add('translate-x-0');
+            } else {
+                menu.classList.remove('translate-x-0');
+                menu.classList.add('translate-x-full');
+            }
+        }
+    </script>
+</body>
+</html>
