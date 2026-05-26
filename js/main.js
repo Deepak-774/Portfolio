@@ -3,7 +3,6 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebas
 import { collection, getDocs, getFirestore } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAOIeO-WZ6tc_IE3gVoZOIlL6jmpned_1M",
   authDomain: "projects-website-f1359.firebaseapp.com",
   projectId: "projects-website-f1359",
   storageBucket: "projects-website-f1359.firebasestorage.app",
