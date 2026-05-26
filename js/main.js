@@ -158,6 +158,89 @@ const renderProjects = (projects) => {
     card.appendChild(body);
     grid.appendChild(card);
   }
+
+  initProjectsCarousel();
+};
+
+let projectsCarouselScrollHandler = null;
+
+const initProjectsCarousel = () => {
+  const grid = document.getElementById("projects-grid");
+  const dotsHost = document.getElementById("projects-carousel-dots");
+  if (!grid || !dotsHost) return;
+
+  const mq = window.matchMedia("(max-width: 720px)");
+
+  const updateDots = () => {
+    const cards = grid.querySelectorAll(".project-card");
+    const dots = dotsHost.querySelectorAll(".projects-carousel-dot");
+
+    if (!mq.matches || cards.length <= 1 || dots.length === 0) return;
+
+    const gridRect = grid.getBoundingClientRect();
+    const center = gridRect.left + gridRect.width / 2;
+
+    let active = 0;
+    let minDist = Number.POSITIVE_INFINITY;
+
+    cards.forEach((card, i) => {
+      const rect = card.getBoundingClientRect();
+      const cardCenter = rect.left + rect.width / 2;
+      const dist = Math.abs(cardCenter - center);
+      if (dist < minDist) {
+        minDist = dist;
+        active = i;
+      }
+    });
+
+    dots.forEach((dot, i) => {
+      const isActive = i === active;
+      dot.classList.toggle("is-active", isActive);
+      if (isActive) dot.setAttribute("aria-current", "true");
+      else dot.removeAttribute("aria-current");
+    });
+  };
+
+  const setup = () => {
+    const cards = grid.querySelectorAll(".project-card");
+    dotsHost.innerHTML = "";
+
+    if (projectsCarouselScrollHandler) {
+      grid.removeEventListener("scroll", projectsCarouselScrollHandler);
+      projectsCarouselScrollHandler = null;
+    }
+
+    if (!mq.matches || cards.length <= 1) {
+      dotsHost.hidden = true;
+      return;
+    }
+
+    dotsHost.hidden = false;
+
+    cards.forEach((card, i) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "projects-carousel-dot";
+      dot.setAttribute("aria-label", `Go to project ${i + 1}`);
+      if (i === 0) {
+        dot.classList.add("is-active");
+        dot.setAttribute("aria-current", "true");
+      }
+      dot.addEventListener("click", () => {
+        card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      });
+      dotsHost.appendChild(dot);
+    });
+
+    projectsCarouselScrollHandler = () => {
+      window.requestAnimationFrame(updateDots);
+    };
+    grid.addEventListener("scroll", projectsCarouselScrollHandler, { passive: true });
+    updateDots();
+  };
+
+  setup();
+  mq.addEventListener("change", setup);
 };
 
 const loadProjects = async () => {
@@ -183,10 +266,17 @@ const loadProjects = async () => {
 const initMobileNav = () => {
   const toggle = document.querySelector(".nav-toggle");
   const menu = document.getElementById("nav-menu");
+  const backdrop = document.getElementById("nav-backdrop");
+  const closeBtn = document.querySelector(".nav-close");
   if (!toggle || !menu) return;
 
   const setExpanded = (expanded) => {
     toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+    toggle.setAttribute("aria-label", expanded ? "Close navigation menu" : "Open navigation menu");
+    menu.setAttribute("aria-hidden", expanded ? "false" : "true");
+    document.body.classList.toggle("nav-open", expanded);
+    backdrop?.classList.toggle("is-visible", expanded);
+    backdrop?.setAttribute("aria-hidden", expanded ? "false" : "true");
   };
 
   const close = () => {
@@ -194,21 +284,30 @@ const initMobileNav = () => {
     setExpanded(false);
   };
 
+  const open = () => {
+    menu.classList.add("is-open");
+    setExpanded(true);
+  };
+
   toggle.addEventListener("click", () => {
-    const open = menu.classList.toggle("is-open");
-    setExpanded(open);
+    if (menu.classList.contains("is-open")) close();
+    else open();
   });
+
+  closeBtn?.addEventListener("click", close);
+  backdrop?.addEventListener("click", close);
 
   menu.addEventListener("click", (e) => {
     const t = e.target;
     if (t && t instanceof HTMLElement && t.tagName === "A") close();
   });
 
-  document.addEventListener("click", (e) => {
-    const target = e.target;
-    if (!menu.classList.contains("is-open")) return;
-    if (target instanceof Node && (menu.contains(target) || toggle.contains(target))) return;
-    close();
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.matchMedia("(min-width: 721px)").matches) close();
   });
 };
 
@@ -324,7 +423,10 @@ if (document.readyState === "loading") {
       initSectionNav();
       initContactForm();
       runTypewriter();
-      loadProjects().catch(() => renderProjects([]));
+      loadProjects().catch(() => {
+        renderProjects([]);
+        initProjectsCarousel();
+      });
     },
     { once: true }
   );
@@ -333,5 +435,8 @@ if (document.readyState === "loading") {
   initSectionNav();
   initContactForm();
   runTypewriter();
-  loadProjects().catch(() => renderProjects([]));
+  loadProjects().catch(() => {
+    renderProjects([]);
+    initProjectsCarousel();
+  });
 }

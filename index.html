@@ -13,10 +13,19 @@
   <body>
     <header class="site-header" id="top">
       <nav class="nav" aria-label="Primary">
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
-          Menu
+        <a class="nav-brand" href="#home">Deepak</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open navigation menu">
+          <span class="nav-toggle-icon" aria-hidden="true"></span>
         </button>
-        <div class="nav-menu" id="nav-menu">
+        <div class="nav-menu" id="nav-menu" aria-hidden="true">
+          <div class="nav-menu-header">
+            <span class="nav-menu-title">Menu</span>
+            <button class="nav-close" type="button" aria-label="Close menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
           <a class="nav-link" href="#home">Home</a>
           <a class="nav-link" href="#about">About Me</a>
           <a class="nav-link" href="resume.html">Resume</a>
@@ -40,7 +49,7 @@
           <p class="hero-subtitle"><span id="typed-role" aria-label="Role"></span><span class="typed-cursor" aria-hidden="true"></span></p>
           <div class="hero-actions">
             <a class="button" href="#projects">View Projects</a>
-            <a class="button" href="resume.html">Download Resume</a>
+            <a class="button" href="resume.html">See Resume</a>
           </div>
         </div>
       </section>
@@ -107,7 +116,11 @@
       <section id="projects" class="section" aria-label="Projects">
         <div class="container">
           <h2 class="section-title">Projects</h2>
-          <div id="projects-grid" class="projects-grid" aria-live="polite"></div>
+          <div class="projects-carousel">
+            <p class="projects-carousel-hint" aria-hidden="true">Swipe to explore projects</p>
+            <div id="projects-grid" class="projects-grid" aria-live="polite"></div>
+            <div id="projects-carousel-dots" class="projects-carousel-dots" role="tablist" aria-label="Project slides" hidden></div>
+          </div>
           <div class="projects-cta">
             <a class="button" href="https://deepak-774.github.io/Projects-Website/" target="_blank" rel="noopener noreferrer">
               View All Projects
@@ -122,21 +135,21 @@
           <div class="contact-grid">
             <div class="contact-left">
               <h3 class="contact-title">Send a Message</h3>
-              <form class="contact-form" id="contact-form">
+              <form class="contact-form" id="contact-form" autocomplete="off">
                 <div class="contact-row">
                   <div class="contact-field">
                     <label class="contact-label" for="contact-name">Name</label>
-                    <input class="contact-input" id="contact-name" name="name" type="text" autocomplete="name" />
+                    <input class="contact-input" id="contact-name" name="name" type="text" autocomplete="off" />
                   </div>
                   <div class="contact-field">
                     <label class="contact-label" for="contact-email">Email</label>
-                    <input class="contact-input" id="contact-email" name="email" type="email" autocomplete="email" />
+                    <input class="contact-input" id="contact-email" name="email" type="email" autocomplete="off" />
                   </div>
                 </div>
 
                 <div class="contact-field">
                   <label class="contact-label" for="contact-subject">Subject</label>
-                  <input class="contact-input" id="contact-subject" name="subject" type="text" />
+                  <input class="contact-input" id="contact-subject" name="subject" type="text" autocomplete="off" />
                 </div>
 
                 <div class="contact-field">
@@ -245,6 +258,8 @@
         <p class="footer-copy">© 2026 Deepak Deodhar All rights reserved.</p>
       </div>
     </footer>
+
+    <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 
     <script type="module" src="js/main.js"></script>
   </body>
