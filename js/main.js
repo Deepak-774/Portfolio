@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
-import { collection, getDocs, getFirestore } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+import { addDoc, collection, getDocs, getFirestore } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 const firebaseConfig = {
   authDomain: "projects-website-f1359.firebaseapp.com",
@@ -152,7 +152,44 @@ const renderProjects = (projects) => {
 
     const body = createEl("div", "project-body");
     body.appendChild(createEl("h3", "project-title", p.name || "Untitled Project"));
-    if (p.overview) body.appendChild(createEl("p", "project-text", p.overview));
+    
+    if (p.overview) {
+      const textEl = createEl("p", "project-text");
+      const limit = 90;
+      if (p.overview.length > limit) {
+        const briefText = p.overview.slice(0, limit).trim() + "...";
+        
+        const briefSpan = createEl("span", "project-text-brief", briefText);
+        const fullSpan = createEl("span", "project-text-full", p.overview);
+        fullSpan.style.display = "none";
+        
+        const seeMoreBtn = createEl("button", "project-see-more", "See More");
+        seeMoreBtn.type = "button";
+        
+        seeMoreBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const isExpanded = fullSpan.style.display === "inline";
+          if (isExpanded) {
+            fullSpan.style.display = "none";
+            briefSpan.style.display = "inline";
+            seeMoreBtn.textContent = "See More";
+            card.classList.remove("is-expanded");
+          } else {
+            fullSpan.style.display = "inline";
+            briefSpan.style.display = "none";
+            seeMoreBtn.textContent = "See Less";
+            card.classList.add("is-expanded");
+          }
+        });
+        
+        textEl.appendChild(briefSpan);
+        textEl.appendChild(fullSpan);
+        textEl.appendChild(seeMoreBtn);
+      } else {
+        textEl.textContent = p.overview;
+      }
+      body.appendChild(textEl);
+    }
 
     card.appendChild(body);
     grid.appendChild(card);
@@ -387,9 +424,23 @@ const initContactForm = () => {
   const form = document.getElementById("contact-form");
   if (!(form instanceof HTMLFormElement)) return;
 
-  const emailTo = "deepakdeodhar01@gmail.com";
+  const resetBtn = document.getElementById("success-reset-btn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      const formContainer = document.getElementById("contact-form-container");
+      const successContainer = document.getElementById("contact-success");
+      if (formContainer && successContainer) {
+        successContainer.hidden = true;
+        formContainer.hidden = false;
+      }
+    });
+  }
 
-  form.addEventListener("submit", (e) => {
+  // Unique topic name for receiving push notifications via ntfy.sh
+  // You can change this to a secret random string of your choice
+  const NTFY_TOPIC = "deepak_portfolio_messages_a8e7f3";
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(form);
@@ -398,19 +449,58 @@ const initContactForm = () => {
     const subject = String(formData.get("subject") || "").trim();
     const message = String(formData.get("message") || "").trim();
 
-    const fullSubject = subject || "Portfolio Contact";
-    const bodyLines = [
-      message,
-      "",
-      name ? `Name: ${name}` : "",
-      email ? `Email: ${email}` : ""
-    ].filter(Boolean);
+    if (!name || !email || !message) {
+      alert("Please fill in all required fields (Name, Email, and Message).");
+      return;
+    }
 
-    const mailto =
-      `mailto:${emailTo}?subject=${encodeURIComponent(fullSubject)}` +
-      `&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const submitBtnText = form.querySelector('.contact-submit-text');
+    const originalText = submitBtnText ? submitBtnText.textContent : 'Send Message';
 
-    window.location.href = mailto;
+    try {
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitBtnText) submitBtnText.textContent = 'Sending...';
+
+      // 1. Save to Firebase Firestore (using the exact PascalCase fields in your database)
+      await addDoc(collection(db, "Messages"), {
+        Name: name,
+        Email: email,
+        Subject: subject || "No Subject",
+        Message: message,
+        Timestamp: new Date()
+      });
+
+      // 2. Dispatch push notification to device using ntfy.sh
+      try {
+        await fetch(`https://ntfy.sh/${NTFY_TOPIC}`, {
+          method: "POST",
+          headers: {
+            "Title": `Portfolio: Message from ${name}`,
+            "Priority": "high",
+            "Tags": "incoming_envelope,speech_balloon"
+          },
+          body: `Subject: ${subject || "No Subject"}\n\nEmail: ${email}\n\nMessage: ${message}`
+        });
+      } catch (notifErr) {
+        console.warn("Failed to dispatch push notification:", notifErr);
+      }
+
+      // Hide form and show custom success panel
+      const formContainer = document.getElementById("contact-form-container");
+      const successContainer = document.getElementById("contact-success");
+      if (formContainer && successContainer) {
+        formContainer.hidden = true;
+        successContainer.hidden = false;
+      }
+      form.reset();
+    } catch (error) {
+      console.error("Error saving message to Firestore:", error);
+      alert("Failed to send message. Please verify your internet connection or email directly at deepakdeodhar01@gmail.com");
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+      if (submitBtnText) submitBtnText.textContent = originalText;
+    }
   });
 };
 

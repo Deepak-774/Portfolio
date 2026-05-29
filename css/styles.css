@@ -497,44 +497,28 @@ a {
 }
 
 .project-tag {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #ff9d75;
-  border: 1px solid rgba(224, 96, 49, 0.3);
-  background: rgba(224, 96, 49, 0.08);
-  padding: 4px 10px;
-  border-radius: 20px;
+  border: 1px solid rgba(224, 96, 49, 0.25);
+  background: rgba(224, 96, 49, 0.06);
+  padding: 3px 8px;
+  border-radius: 4px;
 }
 
 .project-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
+  gap: 6px;
+  margin: 0 0 12px;
   padding: 0;
   list-style: none;
 }
 
-.project-tags--overlay {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  z-index: 2;
-}
-
-.project-tags--overlay .project-tag {
-  background: rgba(224, 96, 49, 0.7);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
 .project-title {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   font-size: 18px;
   font-weight: 600;
   color: var(--text);
@@ -545,6 +529,51 @@ a {
   color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4; /* Default to 4 lines on desktop */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 6.4em; /* 4 lines * 1.6 line-height */
+  transition: max-height 0.3s ease;
+}
+
+.project-card.is-expanded .project-text {
+  -webkit-line-clamp: unset;
+  max-height: 1000px;
+}
+
+.project-see-more {
+  display: none; /* Hidden by default, JS will show if text is truncated */
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 0 0;
+  font-family: var(--font-body);
+  transition: color 150ms ease;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.project-see-more:hover {
+  color: #ff9d75;
+}
+
+.project-see-more::after {
+  content: " ↓";
+  font-size: 11px;
+  font-weight: bold;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.project-card.is-expanded .project-see-more::after {
+  content: " ↑";
 }
 
 .projects-carousel-hint {
@@ -867,6 +896,114 @@ a {
 .contact-submit:hover .contact-submit-icon,
 .contact-submit:focus-visible .contact-submit-icon {
   opacity: 1;
+}
+
+/* Contact Success Modal Overlay */
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.contact-modal.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.contact-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.contact-modal-content {
+  position: relative;
+  width: min(420px, calc(100% - 32px));
+  background: #1f1f23;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 40px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform: translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  z-index: 1;
+}
+
+.contact-modal.is-visible .contact-modal-content {
+  transform: translateY(0);
+}
+
+.contact-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 150ms ease;
+}
+
+.contact-modal-close:hover {
+  color: var(--text);
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  color: #22c55e;
+  margin-bottom: 20px;
+}
+
+.success-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.success-text {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 320px;
+  margin: 0 0 24px;
+}
+
+.success-button {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 10px 32px;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.success-button:hover {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(224, 96, 49, 0.35);
 }
 
 .contact-cards {
@@ -1364,10 +1501,33 @@ a.contact-method:hover {
   }
 
   .project-card {
-    flex: 0 0 min(300px, calc(100vw - var(--mobile-gutter) * 2 - 24px));
+    flex: 0 0 calc(100vw - var(--mobile-gutter) * 2);
     scroll-snap-align: center;
     scroll-snap-stop: always;
     border-radius: 12px;
+  }
+
+  .project-body {
+    padding: 16px;
+    padding-bottom: 60px;
+  }
+
+  .project-icon-link {
+    left: 16px;
+    bottom: 16px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .project-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .project-text {
+    font-size: 13px;
+    -webkit-line-clamp: 3; /* Clamped to 3 lines on mobile */
+    max-height: 4.8em; /* 3 lines * 1.6 line-height */
   }
 
   .projects-carousel-dots:not([hidden]) {
