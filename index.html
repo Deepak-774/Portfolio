@@ -56,9 +56,9 @@
 
       <section id="about" class="section" aria-label="About">
         <div class="container">
-          <h2 class="section-title">About Me</h2>
+          <h2 class="section-title reveal">About Me</h2>
           <div class="about-grid">
-            <div class="about-left">
+            <div class="about-left reveal">
               <p class="about-paragraph">
                 Developer with hands-on Android app development experience using Java, XML, and Android Studio. Seeking opportunities to build reliable apps while continuously improving technical skills.
               </p>
@@ -84,9 +84,9 @@
                 </div>
               </div>
             </div>
-            <div class="about-right">
+            <div class="about-right reveal">
               <h3 class="about-subtitle">Skills</h3>
-              <div class="skill-icons" aria-label="Skills">
+              <div class="skill-icons reveal-stagger" aria-label="Skills">
                 <div class="skill-icon skill-icon--stacked" aria-label="Android Studio">
                   <img src="logos/Android Studio.png" alt="Android Studio" loading="lazy" />
                   <span>Android Studio</span>
@@ -115,14 +115,14 @@
 
       <section id="projects" class="section" aria-label="Projects">
         <div class="container">
-          <h2 class="section-title">Projects</h2>
+          <h2 class="section-title reveal">Projects</h2>
           <div class="projects-carousel">
             <p class="projects-carousel-hint" aria-hidden="true">Swipe to explore projects</p>
             <div id="projects-grid" class="projects-grid" aria-live="polite"></div>
             <div id="projects-carousel-dots" class="projects-carousel-dots" role="tablist" aria-label="Project slides" hidden></div>
           </div>
           <div class="projects-cta">
-            <a class="button" href="https://deepak-774.github.io/Projects-Website/" target="_blank" rel="noopener noreferrer">
+            <a class="button reveal" href="https://deepak-774.github.io/Projects-Website/" target="_blank" rel="noopener noreferrer">
               View All Projects
             </a>
           </div>
@@ -131,45 +131,62 @@
 
       <section id="contact" class="section" aria-label="Contact">
         <div class="container">
-          <h2 class="section-title">Contact Me</h2>
+          <h2 class="section-title reveal">Contact Me</h2>
           <div class="contact-grid">
-            <div class="contact-left">
+            <div class="contact-left reveal">
               <h3 class="contact-title">Send a Message</h3>
-              <form class="contact-form" id="contact-form" autocomplete="off">
-                <div class="contact-row">
-                  <div class="contact-field">
-                    <label class="contact-label" for="contact-name">Name</label>
-                    <input class="contact-input" id="contact-name" name="name" type="text" autocomplete="off" />
+
+              <div id="contact-form-container">
+                <form class="contact-form" id="contact-form" autocomplete="off">
+                  <div class="contact-row">
+                    <div class="contact-field">
+                      <label class="contact-label" for="contact-name">Name</label>
+                      <input class="contact-input" id="contact-name" name="name" type="text" autocomplete="off" />
+                    </div>
+                    <div class="contact-field">
+                      <label class="contact-label" for="contact-email">Email</label>
+                      <input class="contact-input" id="contact-email" name="email" type="email" autocomplete="off" />
+                    </div>
                   </div>
+
                   <div class="contact-field">
-                    <label class="contact-label" for="contact-email">Email</label>
-                    <input class="contact-input" id="contact-email" name="email" type="email" autocomplete="off" />
+                    <label class="contact-label" for="contact-subject">Subject</label>
+                    <input class="contact-input" id="contact-subject" name="subject" type="text" autocomplete="off" />
                   </div>
-                </div>
 
-                <div class="contact-field">
-                  <label class="contact-label" for="contact-subject">Subject</label>
-                  <input class="contact-input" id="contact-subject" name="subject" type="text" autocomplete="off" />
-                </div>
+                  <div class="contact-field">
+                    <label class="contact-label" for="contact-message">Message</label>
+                    <textarea class="contact-textarea" id="contact-message" name="message" rows="6"></textarea>
+                  </div>
 
-                <div class="contact-field">
-                  <label class="contact-label" for="contact-message">Message</label>
-                  <textarea class="contact-textarea" id="contact-message" name="message" rows="6"></textarea>
-                </div>
+                  <button class="contact-submit" type="submit">
+                    <span class="contact-submit-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                    <span class="contact-submit-text">Send Message</span>
+                  </button>
+                </form>
+              </div>
 
-                <button class="contact-submit" type="submit">
-                  <span class="contact-submit-icon" aria-hidden="true">
+              <div id="contact-success" hidden>
+                <div class="contact-success-content">
+                  <div class="contact-success-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                      <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M22 4L12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                  </span>
-                  <span class="contact-submit-text">Send Message</span>
-                </button>
-              </form>
+                  </div>
+                  <h4 class="contact-success-title">Message Sent!</h4>
+                  <p class="contact-success-text">Thank you for reaching out. I'll get back to you within 24 hours.</p>
+                  <button class="button" id="success-reset-btn" type="button">Send Another Message</button>
+                </div>
+              </div>
             </div>
 
-            <div class="contact-right">
+            <div class="contact-right reveal">
               <h3 class="about-subtitle">Get in touch</h3>
               <div class="contact-methods" aria-label="Contact details">
                 <a class="contact-method" href="mailto:deepakdeodhar01@gmail.com">
@@ -281,6 +298,12 @@
     </div>
 
     <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6" />
+      </svg>
+    </button>
 
     <script type="module" src="js/main.js"></script>
   </body>

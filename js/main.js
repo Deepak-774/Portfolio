@@ -109,12 +109,14 @@ const renderProjects = (projects) => {
     const card = createEl("article", "project-card");
 
     if (p.tags && p.tags.length) {
-      const tags = createEl("ul", "project-tags project-tags--overlay");
+      const row = createEl("div", "project-tags-row");
+      const tags = createEl("ul", "project-tags");
       for (const t of p.tags) {
         const li = createEl("li", "project-tag", t);
         tags.appendChild(li);
       }
-      card.appendChild(tags);
+      row.appendChild(tags);
+      card.appendChild(row);
     }
 
     if (p.githubUrl) {
@@ -154,46 +156,38 @@ const renderProjects = (projects) => {
     body.appendChild(createEl("h3", "project-title", p.name || "Untitled Project"));
     
     if (p.overview) {
-      const textEl = createEl("p", "project-text");
-      const limit = 90;
-      if (p.overview.length > limit) {
-        const briefText = p.overview.slice(0, limit).trim() + "...";
-        
-        const briefSpan = createEl("span", "project-text-brief", briefText);
-        const fullSpan = createEl("span", "project-text-full", p.overview);
-        fullSpan.style.display = "none";
-        
-        const seeMoreBtn = createEl("button", "project-see-more", "See More");
-        seeMoreBtn.type = "button";
-        
-        seeMoreBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const isExpanded = fullSpan.style.display === "inline";
-          if (isExpanded) {
-            fullSpan.style.display = "none";
-            briefSpan.style.display = "inline";
-            seeMoreBtn.textContent = "See More";
-            card.classList.remove("is-expanded");
-          } else {
-            fullSpan.style.display = "inline";
-            briefSpan.style.display = "none";
-            seeMoreBtn.textContent = "See Less";
-            card.classList.add("is-expanded");
-          }
-        });
-        
-        textEl.appendChild(briefSpan);
-        textEl.appendChild(fullSpan);
-        textEl.appendChild(seeMoreBtn);
-      } else {
-        textEl.textContent = p.overview;
-      }
-      body.appendChild(textEl);
+      body.appendChild(createEl("p", "project-text", p.overview));
     }
 
     card.appendChild(body);
     grid.appendChild(card);
   }
+
+  // Staggered entrance animation + Read More buttons
+  requestAnimationFrame(() => {
+    const allCards = grid.querySelectorAll('.project-card');
+    allCards.forEach((c, i) => {
+      c.style.animationDelay = `${i * 0.1}s`;
+      c.classList.add('is-visible');
+    });
+
+    grid.querySelectorAll('.project-text').forEach((textEl) => {
+      if (textEl.scrollHeight > textEl.clientHeight) {
+        const card = textEl.closest('.project-card');
+        if (!card) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'project-see-more';
+        btn.textContent = 'Read More';
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          card.classList.toggle('is-expanded');
+          btn.textContent = card.classList.contains('is-expanded') ? 'Show Less' : 'Read More';
+        });
+        textEl.after(btn);
+      }
+    });
+  });
 
   initProjectsCarousel();
 };
@@ -273,30 +267,111 @@ const initProjectsCarousel = () => {
     };
     grid.addEventListener("scroll", projectsCarouselScrollHandler, { passive: true });
     updateDots();
+
+    // Cleanup previous drag listeners before adding new ones
+    if (grid._dragCleanup) grid._dragCleanup();
+
+    // Pointer-based drag for smoother swiping
+    let isDown = false;
+    let dragStartX = 0;
+    let dragScrollLeft = 0;
+    let snapTimer = null;
+    let pointerId = null;
+
+    const onDragStart = (e) => {
+      isDown = true;
+      pointerId = e.pointerId;
+      dragStartX = e.clientX;
+      dragScrollLeft = grid.scrollLeft;
+      clearTimeout(snapTimer);
+      grid.classList.add("is-dragging");
+    };
+
+    const onDragMove = (e) => {
+      if (!isDown || e.pointerId !== pointerId) return;
+      e.preventDefault();
+      const dx = (e.clientX - dragStartX) * 1.3;
+      grid.scrollLeft = dragScrollLeft - dx;
+    };
+
+    const onDragEnd = () => {
+      if (!isDown) return;
+      isDown = false;
+      pointerId = null;
+      grid.classList.remove("is-dragging");
+      snapTimer = setTimeout(() => {
+        grid.style.scrollSnapType = "";
+      }, 150);
+    };
+
+    grid.addEventListener("pointerdown", onDragStart, { passive: true });
+    grid.addEventListener("pointermove", onDragMove, { passive: false });
+    grid.addEventListener("pointerup", onDragEnd);
+    grid.addEventListener("pointercancel", onDragEnd);
+
+    // Store cleanup reference so it can be removed on re-setup
+    grid._dragCleanup = () => {
+      grid.removeEventListener("pointerdown", onDragStart);
+      grid.removeEventListener("pointermove", onDragMove);
+      grid.removeEventListener("pointerup", onDragEnd);
+      grid.removeEventListener("pointercancel", onDragEnd);
+    };
   };
 
   setup();
   mq.addEventListener("change", setup);
 };
 
+const renderSkeletons = (grid) => {
+  grid.innerHTML = "";
+  const count = 3;
+  for (let i = 0; i < count; i++) {
+    const sk = createEl("div", "project-skeleton");
+    sk.innerHTML =
+      '<div class="project-skeleton-image"></div>' +
+      '<div class="project-skeleton-body">' +
+        '<div class="project-skeleton-tags">' +
+          '<div class="project-skeleton-line project-skeleton-line--tag"></div>' +
+          '<div class="project-skeleton-line project-skeleton-line--tag"></div>' +
+        "</div>" +
+        '<div class="project-skeleton-line"></div>' +
+        '<div class="project-skeleton-line project-skeleton-line--short"></div>' +
+        '<div class="project-skeleton-line project-skeleton-line--short"></div>' +
+      "</div>";
+    grid.appendChild(sk);
+  }
+};
+
 const loadProjects = async () => {
   const grid = document.getElementById("projects-grid");
-  if (grid) grid.textContent = "Loading projects...";
+  if (!grid) return;
 
-  const snap = await getDocs(collection(db, "Projects"));
-  const projects = snap.docs.map((d) => {
-    const data = d.data() || {};
-    return {
-      name: data["Project Name"],
-      overview: data["Project_Overview"],
-      displayImageUrl: data["Display Image"],
-      gifUrl: data["GIF"],
-      githubUrl: data["GitHub"],
-      tags: Array.isArray(data["Tags"]) ? data["Tags"] : []
-    };
-  });
+  renderSkeletons(grid);
 
-  renderProjects(projects);
+  try {
+    const snap = await getDocs(collection(db, "Projects"));
+    const projects = snap.docs.map((d) => {
+      const data = d.data() || {};
+      return {
+        name: data["Project Name"],
+        overview: data["Project_Overview"],
+        displayImageUrl: data["Display Image"],
+        gifUrl: data["GIF"],
+        githubUrl: data["GitHub"],
+        tags: Array.isArray(data["Tags"]) ? data["Tags"] : []
+      };
+    });
+
+    renderProjects(projects);
+  } catch {
+    grid.innerHTML =
+      '<div class="projects-error">' +
+        "<p>Failed to load projects. Check your connection and try again.</p>" +
+        '<button class="button" id="retry-projects" type="button">Try Again</button>' +
+      "</div>";
+
+    document.getElementById("retry-projects")?.addEventListener("click", () => loadProjects());
+  }
 };
 
 const initMobileNav = () => {
@@ -361,17 +436,17 @@ const initSectionNav = () => {
     const sections = getSections();
     if (!sections.length) return -1;
 
-    const headerHeight = document.querySelector(".site-header")?.getBoundingClientRect().height || 0;
-    const y = headerHeight + 24;
-
+    const vh = window.innerHeight;
     let bestIndex = 0;
-    let bestDist = Number.POSITIVE_INFINITY;
+    let bestArea = 0;
 
     for (let i = 0; i < sections.length; i += 1) {
       const rect = sections[i].getBoundingClientRect();
-      const dist = Math.abs(rect.top - y);
-      if (rect.top <= y && dist < bestDist) {
-        bestDist = dist;
+      const visibleTop = Math.max(0, rect.top);
+      const visibleBottom = Math.min(vh, rect.bottom);
+      const visibleArea = Math.max(0, visibleBottom - visibleTop);
+      if (visibleArea > bestArea) {
+        bestArea = visibleArea;
         bestIndex = i;
       }
     }
@@ -418,6 +493,56 @@ const initSectionNav = () => {
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);
   updateDisabled();
+};
+
+const initRevealAnimations = () => {
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(".reveal, .reveal-stagger").forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const target = entry.target;
+
+        if (target.classList.contains("reveal-stagger")) {
+          const children = target.children;
+          for (let i = 0; i < children.length; i++) {
+            children[i].style.setProperty("--reveal-delay", `${i * 0.08}s`);
+            children[i].style.transitionDelay = `var(--reveal-delay)`;
+          }
+        }
+
+        target.classList.add("is-visible");
+        observer.unobserve(target);
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+  );
+
+  document.querySelectorAll(".reveal, .reveal-stagger").forEach((el) => observer.observe(el));
+};
+
+const initBackToTop = () => {
+  const btn = document.getElementById("back-to-top");
+  if (!btn) return;
+
+  let rafId = 0;
+  const onScroll = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+      btn.classList.toggle("is-visible", window.scrollY > 500);
+    });
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 };
 
 const initContactForm = () => {
@@ -511,11 +636,10 @@ if (document.readyState === "loading") {
       initMobileNav();
       initSectionNav();
       initContactForm();
+      initBackToTop();
+      initRevealAnimations();
       runTypewriter();
-      loadProjects().catch(() => {
-        renderProjects([]);
-        initProjectsCarousel();
-      });
+      loadProjects();
     },
     { once: true }
   );
@@ -523,9 +647,8 @@ if (document.readyState === "loading") {
   initMobileNav();
   initSectionNav();
   initContactForm();
+  initBackToTop();
+  initRevealAnimations();
   runTypewriter();
-  loadProjects().catch(() => {
-    renderProjects([]);
-    initProjectsCarousel();
-  });
+  loadProjects();
 }
