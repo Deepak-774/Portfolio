@@ -94,6 +94,37 @@ const createEl = (tag, className, text) => {
   return el;
 };
 
+const setupReadMoreButtons = (grid) => {
+  if (!grid) return;
+
+  grid.querySelectorAll('.project-see-more').forEach((b) => b.remove());
+  grid.querySelectorAll('.project-card.is-expanded').forEach((c) => c.classList.remove('is-expanded'));
+
+  void grid.offsetHeight;
+
+  grid.querySelectorAll('.project-card').forEach((card) => {
+    const textEl = card.querySelector('.project-text');
+    if (!textEl) return;
+
+    if (textEl.scrollHeight > textEl.clientHeight + 2) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'project-see-more';
+      btn.textContent = 'Read More';
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const expanded = card.classList.toggle('is-expanded');
+        btn.textContent = expanded ? 'Show Less' : 'Read More';
+      });
+      textEl.after(btn);
+    }
+  });
+};
+
+window.matchMedia('(max-width: 720px)').addEventListener('change', () => {
+  location.reload();
+});
+
 const renderProjects = (projects) => {
   const grid = document.getElementById("projects-grid");
   if (!grid) return;
@@ -171,22 +202,7 @@ const renderProjects = (projects) => {
       c.classList.add('is-visible');
     });
 
-    grid.querySelectorAll('.project-text').forEach((textEl) => {
-      if (textEl.scrollHeight > textEl.clientHeight) {
-        const card = textEl.closest('.project-card');
-        if (!card) return;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'project-see-more';
-        btn.textContent = 'Read More';
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          card.classList.toggle('is-expanded');
-          btn.textContent = card.classList.contains('is-expanded') ? 'Show Less' : 'Read More';
-        });
-        textEl.after(btn);
-      }
-    });
+    setupReadMoreButtons(grid);
   });
 
   initProjectsCarousel();
