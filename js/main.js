@@ -25,7 +25,7 @@ const runTypewriter = () => {
   if (!target) return;
 
   const roles = ["Android Developer", "UI/UX Designer", "Python Developer", "Unity Game Developer", "Freelancer"].filter(Boolean);
-  const respectReducedMotion = false;
+  const respectReducedMotion = true;
   const prefersReducedMotion =
     window.matchMedia && typeof window.matchMedia === "function"
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
