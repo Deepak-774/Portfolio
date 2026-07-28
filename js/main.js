@@ -24,7 +24,7 @@ const runTypewriter = () => {
   const target = document.getElementById("typed-role");
   if (!target) return;
 
-  const roles = ["Android Developer"].filter(Boolean);
+  const roles = ["Android Developer", "UI/UX Designer", "Python Developer", "Unity Game Developer", "Freelancer"].filter(Boolean);
   const respectReducedMotion = false;
   const prefersReducedMotion =
     window.matchMedia && typeof window.matchMedia === "function"
@@ -364,8 +364,17 @@ const loadProjects = async () => {
 
   renderSkeletons(grid);
 
+  const TIMEOUT_MS = 8000;
+
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("timeout")), TIMEOUT_MS)
+  );
+
   try {
-    const snap = await getDocs(collection(db, "Projects"));
+    const snap = await Promise.race([
+      getDocs(collection(db, "Projects")),
+      timeout
+    ]);
     const projects = snap.docs.map((d) => {
       const data = d.data() || {};
       return {
@@ -379,10 +388,14 @@ const loadProjects = async () => {
     });
 
     renderProjects(projects);
-  } catch {
+  } catch (err) {
+    const isTimeout = err.message === "timeout";
     grid.innerHTML =
       '<div class="projects-error">' +
-        "<p>Failed to load projects. Check your connection and try again.</p>" +
+        `<p>${isTimeout
+          ? "Projects are taking too long to load. Check your connection and try again."
+          : "Failed to load projects. Check your connection and try again."
+        }</p>` +
         '<button class="button" id="retry-projects" type="button">Try Again</button>' +
       "</div>";
 
